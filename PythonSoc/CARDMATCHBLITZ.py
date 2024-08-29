@@ -29,9 +29,12 @@ class x:
     yesButtonColor = "green"
     yesTextColor = "white"
     yesButton = py.Rect(600,360,90,70)
+
+    #no button
     nobuttonColor = "red"
     notextcolor = "white"
-    noButton = py.Rect(800, 360, 90, 70)
+    noButton = py.Rect(820, 360, 90, 70)
+
 
 
 py.init()
@@ -108,7 +111,7 @@ def start_button():
 
 def quit_button():
     py.draw.rect(screen,x.quitbuttonColor,x.quitButton)
-    quitText = startFont.render("QUIT",True,x.quittextcolor)
+    quitText = startFont.render("BACK",True,x.quittextcolor)
     screen.blit(quitText, (x.quitButton.x + (x.quitButton.width - quitText.get_width()) // 2,
                            x.quitButton.y + (x.quitButton.height - quitText.get_height()) // 2))
 
@@ -118,6 +121,16 @@ def exit_button():
     screen.blit(exitText, (x.exitButton.x + (x.exitButton.width - exitText.get_width()) // 2,
                             x.exitButton.y + (x.exitButton.height - exitText.get_height()) // 2))
 
+def singleplayer_button():
+    py.draw.rect(screen, x.exitButtonColor, x.exitButton)
+    exitText = startFont.render("EXIT", True, x.exitTextColor)
+    screen.blit(exitText, (x.exitButton.x + (x.exitButton.width - exitText.get_width()) // 2,
+                            x.exitButton.y + (x.exitButton.height - exitText.get_height()) // 2))
+def multiplayer_button():
+    py.draw.rect(screen, x.exitButtonColor, x.exitButton)
+    exitText = startFont.render("EXIT", True, x.exitTextColor)
+    screen.blit(exitText, (x.exitButton.x + (x.exitButton.width - exitText.get_width()) // 2,
+                            x.exitButton.y + (x.exitButton.height - exitText.get_height()) // 2))
 def dialog_box():
     confirm_box = py.Rect(550,230, 450,260)
     py.draw.rect(screen,"white",confirm_box)
@@ -155,6 +168,12 @@ while window :
             if x.exitButton.collidepoint(event.pos):
                 x.exitButtonColor = "white"
                 x.exitTextColor = "black"
+            if x.yesButton.collidepoint(event.pos):
+                x.yesButtonColor = "#CAEA1D"
+                x.yesTextColor = "white"
+            if x.noButton.collidepoint(event.pos):
+                x.nobuttonColor = "black"
+                x.notextcolor = "white"
         if event.type == py.MOUSEBUTTONUP:
             if x.rectButton.collidepoint(event.pos):
                 x.buttonColor = "blue"
@@ -169,15 +188,21 @@ while window :
                 x.exitTextColor = "white"
                 exit_click = True
             if x.yesButton.collidepoint(event.pos):
-                yes_click = True
+                x.yesButtonColor = "green"
+                x.yesTextColor = "white"
+                exit()
             if x.noButton.collidepoint(event.pos):
-                no_click = True
+                x.nobuttonColor = "red"
+                x.notextcolor = "white"
+                no_click = False
+                exit_click = False
 
 
     if start_click :
         screen.blit(bg_image, (0,0))
         py.mixer.music.stop()
         quit_button()
+
     else:
         InterfaceLoadingVideo()
         screen.fill((0,0,0))
@@ -188,14 +213,9 @@ while window :
         titleDisplay()
         start_button()
         exit_button()
+
         if exit_click and not no_click:
             dialog_box()
-            eve = py.event.wait()
-            if eve.type == py.MOUSEBUTTONDOWN:
-                no_click = False
-                exit_click = False
-            if yes_click:
-                exit()
 
     py.display.update()
 
