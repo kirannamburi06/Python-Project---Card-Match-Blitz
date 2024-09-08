@@ -35,8 +35,24 @@ class x:
     singletextcolor = "black"
     multibuttoncolor = "#21D4DB"
     multitextcolor = "black"
-    singleButton = py.Rect(570, 250, 380, 80)
-    multiButton = py.Rect(570, 400, 380, 80)
+    singleButton = py.Rect(580, 250, 300, 60)
+    multiButton = py.Rect(580, 400, 300, 60)
+
+    card_slot_1 = py.Rect(300,20,150,200)
+    card_slot_2 = py.Rect(500, 20, 150, 230)
+    card_slot_3 = py.Rect(700, 20, 150, 230)
+    card_slot_4 = py.Rect(900, 20, 150, 230)
+    card_slot_5 = py.Rect(1100, 20, 150, 230)
+    card_slot_6 = py.Rect(300, 265, 150, 230)
+    card_slot_7 = py.Rect(500, 265, 150, 230)
+    card_slot_8 = py.Rect(700, 265, 150, 230)
+    card_slot_9 = py.Rect(900, 265, 150, 230)
+    card_slot_10 = py.Rect(1100, 265, 150, 230)
+    card_slot_11 = py.Rect(300, 510, 150, 230)
+    card_slot_12 = py.Rect(500, 510, 150, 230)
+    card_slot_13 = py.Rect(700, 510, 150, 230)
+    card_slot_14 = py.Rect(900, 510, 150, 230)
+    card_slot_15 = py.Rect(1100, 510, 150, 230)
 
 py.init()
 py.mixer.init()
@@ -52,17 +68,26 @@ cap = cv2.VideoCapture("data/backgorund cards game.mp4")
 loadCap = cv2.VideoCapture("data/loadingvideo.mp4")
 
 # Images
-bg_image = py.image.load("data/depositphotos_682070642-stock-photo-playing-cards-futuristic-neon-red.jpg")
+bg_image = py.image.load("data/singlebackground.jpg")
 bg_image = py.transform.scale(bg_image,(1500,750))
-game_back_pic = py.image.load("data/neon-border-glowing-frame-background-square-rectangle-neon-border-picture-frame-with-on-isolated-black-background-4k-resolution-free-video.jpg")
+game_back_pic = py.image.load("data/playbackground.jpg")
 game_back_pic = py.transform.scale(game_back_pic,(1500,750))
+jokerpic = py.image.load("data/jokerpic.png")
+jokerpic = py.transform.scale(jokerpic,(600,800))
+buttonback = py.image.load('data/buttonback.png')
+buttonback = py.transform.scale(buttonback,(450,360))
+#play images
+backcard = py.image.load("data/backcardimg.jpg")
+backcard = py.transform.scale(backcard,(150,230))
+king_card = py.image.load("data/king card.png")
+king_card = py.transform.scale(king_card,(150,200))
 
 # Fonts
 titleFont = py.font.Font('data/BruceForeverRegular-X3jd2.ttf', 70)
 font = py.font.SysFont('Arial', 40)
 startFont = py.font.SysFont('Comic Sans', 40)
 dialogBox_font = py.font.Font('data/Rafgins-Regular.otf', 50)
-player_button_font = py.font.Font('data/Chocolate Covered Raindrops BOLD.ttf', 55)
+player_button_font = py.font.Font('data/Roman SD.ttf', 45)
 
 # Music
 py.mixer.music.load("data/bg_music.mp3")
@@ -70,6 +95,40 @@ bt_click = py.mixer.Sound("data/old-radio-button-click-97549.mp3")
 st_click_sound = py.mixer.Sound("data/startclick.wav")
 exit_click_sound = py.mixer.Sound("data/mixkit-click-error-1110.wav")
 back_clk_sound = py.mixer.Sound("data/mixkit-positive-interface-beep-221.wav")
+
+def cardslots():
+    py.draw.rect(screen,"white",x.card_slot_1)
+    py.draw.rect(screen, "white", x.card_slot_2)
+    py.draw.rect(screen, "white", x.card_slot_3)
+    py.draw.rect(screen, "white", x.card_slot_4)
+    py.draw.rect(screen, "white", x.card_slot_5)
+    py.draw.rect(screen, "white", x.card_slot_6)
+    py.draw.rect(screen, "white", x.card_slot_7)
+    py.draw.rect(screen, "white", x.card_slot_8)
+    py.draw.rect(screen, "white", x.card_slot_9)
+    py.draw.rect(screen, "white", x.card_slot_10)
+    py.draw.rect(screen, "white", x.card_slot_11)
+    py.draw.rect(screen, "white", x.card_slot_12)
+    py.draw.rect(screen, "white", x.card_slot_13)
+    py.draw.rect(screen, "white", x.card_slot_14)
+    py.draw.rect(screen, "white", x.card_slot_15)
+    screen.blit(backcard, (300,20))
+    screen.blit(backcard, (500, 20))
+    screen.blit(backcard, (700, 20))
+    screen.blit(backcard, (900, 20))
+    screen.blit(backcard, (1100, 20))
+    screen.blit(backcard, (300, 265))
+    screen.blit(backcard, (500, 265))
+    screen.blit(backcard, (700, 265))
+    screen.blit(backcard, (900, 265))
+    screen.blit(backcard, (1100, 265))
+    screen.blit(backcard, (300, 510))
+    screen.blit(backcard, (500, 510))
+    screen.blit(backcard, (700, 510))
+    screen.blit(backcard, (900, 510))
+    screen.blit(backcard, (1100, 510))
+
+
 def titleDisplay():
     if x.c < 1:
         colors = ['red', 'green', 'blue', 'orange', 'violet', 'yellow']
@@ -137,12 +196,14 @@ def exit_button():
 
 def singleplayer_button():
     py.draw.rect(screen, x.singlebuttoncolor, x.singleButton, border_radius=25)
+    screen.blit(buttonback, (500, 100))
     singleplayer = player_button_font.render("SINGLE PLAYER", True, x.singletextcolor)
     screen.blit(singleplayer, (x.singleButton.x + (x.singleButton.width - singleplayer.get_width()) // 2,
                             x.singleButton.y + (x.singleButton.height - singleplayer.get_height()) // 2))
 
 def multiplayer_button():
     py.draw.rect(screen, x.multibuttoncolor, x.multiButton, border_radius=25)
+    screen.blit(buttonback, (500, 250))
     multiplayer = player_button_font.render("MULTI PLAYER", True, x.singletextcolor)
     screen.blit(multiplayer, (x.multiButton.x + (x.multiButton.width - multiplayer.get_width()) // 2,
                             x.multiButton.y + (x.multiButton.height - multiplayer.get_height()) // 2))
@@ -279,6 +340,8 @@ while True:
 
     elif state == GAME:
         screen.blit(bg_image, (0, 0))
+        screen.blit(jokerpic,(900,0))
+
         py.mixer.music.stop()
         quit_button()
         singleplayer_button()
@@ -291,6 +354,7 @@ while True:
 
     elif state == PLAY:
         screen.blit(game_back_pic,(0,0))
+        cardslots()
         back_button()
 
     py.display.update()
